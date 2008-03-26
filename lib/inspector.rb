@@ -22,10 +22,10 @@
 
 require 'test/unit'
 
-require File.dirname(__FILE__) + '/inspector/assertions.rb'
-
 module Inspector
 end
+
+require File.dirname(__FILE__) + '/inspector/assertions.rb'
 
 module Test::Unit::Assertions
 

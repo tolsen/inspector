@@ -20,10 +20,9 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-require 'test/test_helper'
-require 'test/unit/dav_unit_test'
+require 'test/unit'
 
-require 'test/xml'
+require File.dirname(__FILE__) + '/../lib/inspector.rb'
 
 class TestXmlTest < Test::Unit::TestCase
 

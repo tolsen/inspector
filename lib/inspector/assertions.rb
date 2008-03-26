@@ -23,7 +23,7 @@
 require 'generator'
 require 'rexml/document'
 
-module Test::XML::Assertions
+module Inspector::Assertions
 
   TEST_XML_REXML_DOC_CTX = {
     :compress_whitespace => :all,

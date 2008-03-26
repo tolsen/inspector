@@ -21,15 +21,16 @@
 # SOFTWARE.
 
 require 'test/unit'
-require 'test/xml/assertions'
 
-module Test::XML
+require File.dirname(__FILE__) + '/inspector/assertions.rb'
+
+module Inspector
 end
 
 module Test::Unit::Assertions
 
   def assert_xml_matches doc
-    yield Test::XML::Assertions::XmlMatchAssertion.new(doc, self)
+    yield Inspector::Assertions::XmlMatchAssertion.new(doc, self)
   end
   
 end

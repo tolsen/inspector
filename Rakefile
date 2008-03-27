@@ -6,5 +6,5 @@
 task :default => [:test]
 
 task :test do
-  ruby "test/test_inspector.rb"
+  ruby "test/inspector_test.rb"
 end

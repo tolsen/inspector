@@ -1,4 +1,4 @@
-# Copyright (c) 2007 Lime Spot LLC
+# Copyright (c) 2007 - 2008 Lime Spot LLC
 
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation files
@@ -24,7 +24,7 @@ require 'test/unit'
 
 require File.dirname(__FILE__) + '/../lib/inspector.rb'
 
-class TestXmlTest < Test::Unit::TestCase
+class InspectorTest < Test::Unit::TestCase
 
   def test_root
     xml = "<foo/>"

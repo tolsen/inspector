@@ -69,6 +69,10 @@ module Inspector::Assertions
       end
     end
 
+#     def inner_xml! actual_xml
+#       assert_inner_xml_current_element actual_xml
+#     end
+    
     private
     
     def assert_any_element ns, name, text = nil, &block
@@ -84,8 +88,7 @@ module Inspector::Assertions
     end
 
     def assert_current_element ns, name, text = nil, &block
-      left = children_left
-      @tc.assert ! left.empty?
+      left = assert_children_left
       assert_element left[0], ns, name, text, &block
     end
 
@@ -106,6 +109,32 @@ module Inspector::Assertions
       @seen << element
     end
 
+
+# does not work yet (innerXML should be outerXML ?)
+#     def assert_inner_xml_current_element actual_xml
+#       left = assert_children_left
+#       assert_inner_xml left[0], actual_xml
+#     end
+    
+    
+#     def assert_inner_xml element, actual_xml
+#       puts "EXPECTED: "
+#       puts element
+#       puts element.innerXML
+
+#       puts "ACTUAL: "
+#       puts actual_xml
+      
+#       @tc.assert_equal element.innerXML, actual_xml
+#     end
+    
+
+    def assert_children_left
+      left = children_left
+      @tc.assert ! left.empty?
+      left
+    end
+    
     def children_left() @children - @seen; end
 
     def with_state_safe

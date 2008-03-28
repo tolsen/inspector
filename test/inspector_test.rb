@@ -232,7 +232,24 @@ class InspectorTest < Test::Unit::TestCase
     end
   end
   
-    
+  def test_regex_success
+    xml = "<foo>hello world</foo>"
+
+    assert_xml_matches xml do |xml|
+      xml.foo /^hello\sw\w/
+    end
+  end
+  
+  def test_regex_fails
+    xml = "<foo>hey, hello world</foo>"
+
+    assert_raise(Test::Unit::AssertionFailedError) do
+      assert_xml_matches xml do |xml|
+        xml.foo /^hello\sw\w/
+      end
+    end
+  end
+  
   
   
 end

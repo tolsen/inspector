@@ -95,7 +95,14 @@ module Inspector::Assertions
     def assert_element element, ns, name, text = nil, &block
       @tc.assert_equal ns, element.namespace unless ns.empty?
       @tc.assert_equal name, element.name
-      @tc.assert_equal text, element.text unless text.nil?
+
+      case text
+      when String
+        @tc.assert_equal text, element.text
+      when Regexp
+        @tc.assert_match text, element.text
+      end
+      
       if block_given?
         with_state_safe do
           @children = element.children

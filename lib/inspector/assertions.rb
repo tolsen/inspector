@@ -39,6 +39,7 @@ module Inspector::Assertions
       @seen = []
       @tc = testcase
       @num_matched = 0
+      @errors = []
     end
 
     def method_missing sym, *args, &block
@@ -79,12 +80,16 @@ module Inspector::Assertions
       children_left.each do |child|
         begin
           assert_element child, ns, name, text, &block
+          @errors.clear
           return
-        rescue Test::Unit::AssertionFailedError
+        rescue Test::Unit::AssertionFailedError => e
+          @errors << e
         end
       end
 
-      @tc.flunk "could not find element named #{name}"
+      error_msg = @errors.map { |e| e.to_s }.join "\n"
+      error_msg << "\nfailed to match tree starting at element #{name}"
+      @tc.flunk error_msg
     end
 
     def assert_current_element ns, name, text = nil, &block
@@ -93,12 +98,12 @@ module Inspector::Assertions
     end
 
     def assert_element element, ns, name, text = nil, &block
-      @tc.assert_equal ns, element.namespace unless ns.empty?
-      @tc.assert_equal name, element.name
+      @tc.assert_equal ns, element.namespace, "namespace mismatch"
+      @tc.assert_equal name, element.name, "element mismatch"
 
       case text
       when String
-        @tc.assert_equal text, element.text
+        @tc.assert_equal text, element.text, "text node mismatch"
       when Regexp
         @tc.assert_match text, element.text
       end
@@ -108,14 +113,14 @@ module Inspector::Assertions
           @children = element.children
           @seen = []
           @num_matched = 0
+          @errors = []
           yield
-          @tc.assert_equal @children.size, @num_matched
+          @tc.assert_equal @num_matched, @children.size, "children mismatch for element #{name}"
         end
       end
 
       @seen << element
     end
-
 
 # does not work yet (innerXML should be outerXML ?)
 #     def assert_inner_xml_current_element actual_xml
@@ -138,7 +143,7 @@ module Inspector::Assertions
 
     def assert_children_left
       left = children_left
-      @tc.assert ! left.empty?
+      @tc.assert !left.empty?, "expected more children, but no children left"
       left
     end
     
@@ -150,8 +155,10 @@ module Inspector::Assertions
       orig_children = @children.clone
       orig_seen = @seen.clone
       orig_num_matched = @num_matched
+      orig_errors = @errors
       yield
     ensure
+      @errors = orig_errors
       @num_matched = orig_num_matched
       @seen = orig_seen
       @children = orig_children

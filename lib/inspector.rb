@@ -31,6 +31,8 @@ module Test::Unit::Assertions
 
   def assert_xml_matches doc
     yield Inspector::Assertions::XmlMatchAssertion.new(doc, self)
+  rescue => e
+    raise e.exception(e.to_s + "\nACTUAL XML:\n\n#{doc}")
   end
   
 end

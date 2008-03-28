@@ -106,6 +106,8 @@ module Inspector::Assertions
         @tc.assert_equal text, element.text, "text node mismatch"
       when Regexp
         @tc.assert_match text, element.text
+      when Proc
+        text.call element
       end
       
       if block_given?

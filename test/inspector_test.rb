@@ -250,6 +250,30 @@ class InspectorTest < Test::Unit::TestCase
     end
   end
   
-  
+  def test_proc
+    xml = "<foo xmlns='baz'/>"
+
+    assert_xml_matches xml do |xml|
+      xml.xmlns! 'baz'
+      xml.foo(lambda do |elem|
+                assert_equal 'baz', elem.namespace
+              end)
+    end
+  end
+
+  def test_proc_and_block
+    xml = "<foo xmlns='baz'><bar/></foo>"
+
+    assert_xml_matches xml do |xml|
+      xml.xmlns! 'baz'
+      xml.foo(lambda do |elem|
+                assert_equal 'baz', elem.namespace
+              end) do
+        xml.bar
+      end
+    end
+  end
+              
+                
   
 end

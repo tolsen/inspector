@@ -62,6 +62,8 @@ module Inspector::Assertions
     def ordered!() @ordered = true; end
     def unordered!() @ordered = false; end
 
+    def subset_match!() @subset_match = true; end
+
     def xmlns! arg
       case arg
       when String then @namespaces[:@default] = arg
@@ -117,7 +119,7 @@ module Inspector::Assertions
           @num_matched = 0
           @errors = []
           yield
-          @tc.assert_equal @num_matched, @children.size, "children mismatch for element #{name}"
+          @tc.assert_equal @num_matched, @children.size, "children mismatch for element #{name}" if !@subset_match
         end
       end
 

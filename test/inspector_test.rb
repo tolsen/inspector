@@ -273,7 +273,29 @@ class InspectorTest < Test::Unit::TestCase
       end
     end
   end
-              
-                
-  
+
+  def test_subset_match_success
+    xml = "<foo><bar/><baz/></foo>"
+
+    assert_xml_matches xml do |xml|
+      xml.foo do
+        xml.subset_match!
+        xml.baz
+      end
+    end
+  end
+
+  def test_subset_match_failure
+    xml = "<foo><bar/><baz/></foo>"
+
+    assert_raise(Test::Unit::AssertionFailedError) do
+      assert_xml_matches xml do |xml|
+        xml.foo do
+          xml.subset_match!
+          xml.zoo
+        end
+      end
+    end
+  end
+
 end

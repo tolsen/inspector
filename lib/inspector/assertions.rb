@@ -59,6 +59,8 @@ module Inspector::Assertions
       @num_matched += 1
     end
 
+    alias tag! method_missing
+
     def ordered!() @ordered = true; end
     def unordered!() @ordered = false; end
 

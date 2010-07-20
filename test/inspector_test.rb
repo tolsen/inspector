@@ -35,6 +35,15 @@ class InspectorTest < Test::Unit::TestCase
 
   end
 
+  def test_root_tag
+    xml = "<foo/>"
+
+    assert_xml_matches xml do |xml|
+      xml.tag! :foo
+    end
+  end
+  
+
   def test_root_wrong_name
     xml = "<foo/>"
 
